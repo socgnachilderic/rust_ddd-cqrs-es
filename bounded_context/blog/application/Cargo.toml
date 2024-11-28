@@ -1,0 +1,9 @@
+[package]
+name = "blog_application"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+blog_domain = { path = "../domain" }
+shared_kernel = { path = "../../../shared_kernel" }

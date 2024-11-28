@@ -1,0 +1,10 @@
+[package]
+name = "blog_domain"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+shared_kernel = { path = "../../../shared_kernel" }
+trait-variant.workspace = true
+uuid = { version = "1.11.0", features = ["fast-rng", "v4"] }

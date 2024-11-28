@@ -1,0 +1,10 @@
+[package]
+name = "blog_infrastructure"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+blog_domain = { path = "../domain" }
+dotenvy.workspace = true
+sqlx = { version = "0.8.2", features = ["postgres", "runtime-tokio-native-tls"] }

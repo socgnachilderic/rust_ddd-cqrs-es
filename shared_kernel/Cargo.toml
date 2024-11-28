@@ -1,0 +1,8 @@
+[package]
+name = "shared_kernel"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+trait-variant.workspace = true

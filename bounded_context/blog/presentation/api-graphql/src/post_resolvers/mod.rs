@@ -36,7 +36,11 @@ pub(crate) struct PostMutation;
 
 #[Object]
 impl PostMutation {
-    async fn create_post(&self, ctx: &Context<'_>, create_post_input: CreatePostInput) -> PostObject {
+    async fn create_post(
+        &self,
+        ctx: &Context<'_>,
+        create_post_input: CreatePostInput,
+    ) -> PostObject {
         ctx.data_unchecked::<InjectionContainer>()
             .create_post_handler
             .execute(create_post_input.into())

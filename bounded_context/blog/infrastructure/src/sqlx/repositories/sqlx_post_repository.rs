@@ -20,14 +20,16 @@ impl SqlxPostRepository {
 
 impl IWritePostRepository for SqlxPostRepository {
     async fn add(&self, post: Post) -> Post {
-        sqlx::query_as::<_, PostModel>("INSERT INTO post (id, title, content) VALUES ($1, $2, $3) RETURNING *")
-            .bind(post.id.to_string())
-            .bind(post.title)
-            .bind(post.content)
-            .fetch_one(self.pool.deref())
-            .await
-            .unwrap()
-            .into()
+        sqlx::query_as::<_, PostModel>(
+            "INSERT INTO post (id, title, content) VALUES ($1, $2, $3) RETURNING *",
+        )
+        .bind(post.id.to_string())
+        .bind(post.title)
+        .bind(post.content)
+        .fetch_one(self.pool.deref())
+        .await
+        .unwrap()
+        .into()
     }
 }
 

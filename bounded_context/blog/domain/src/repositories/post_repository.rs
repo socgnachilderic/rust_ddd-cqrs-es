@@ -3,7 +3,7 @@ use crate::value_objects::post_id::PostId;
 
 #[trait_variant::make(WritePostRepository: Send)]
 pub trait IWritePostRepository {
-    async fn add(&self, post: Post);
+    async fn add(&self, post: Post) -> Post;
 }
 
 #[trait_variant::make(ReadPostRepository: Send)]

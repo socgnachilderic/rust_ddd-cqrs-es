@@ -1,1 +1,1 @@
-mod sqlx;
+pub mod sqlx;

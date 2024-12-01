@@ -1,21 +1,34 @@
+use crate::commands::comment_post::comment_post_command::CommentPostComment;
 use blog_domain::repositories::post_repository::{IReadPostRepository, IWritePostRepository};
 use blog_domain::value_objects::post_id::PostId;
 use shared_kernel::application::ICommandHandler;
-use crate::commands::comment_post::comment_post_command::CommentPostComment;
 
 pub struct CommentPostCommandHandler<W, R>
 where
     W: IWritePostRepository,
-    R: IReadPostRepository
+    R: IReadPostRepository,
 {
     write_post_repository: W,
     read_post_repository: R,
 }
 
+impl<W, R> CommentPostCommandHandler<W, R>
+where
+    W: IWritePostRepository + Clone,
+    R: IReadPostRepository + Clone,
+{
+    pub fn new(write_post_repository: &W, read_post_repository: &R) -> Self {
+        Self {
+            write_post_repository: write_post_repository.clone(),
+            read_post_repository: read_post_repository.clone(),
+        }
+    }
+}
+
 impl<W, R> ICommandHandler<CommentPostComment, ()> for CommentPostCommandHandler<W, R>
 where
     W: IWritePostRepository,
-    R: IReadPostRepository
+    R: IReadPostRepository,
 {
     async fn execute(&self, command: CommentPostComment) {
         let post_id = PostId::new(&command.post_id);

@@ -2,8 +2,6 @@ use crate::entities::comment::Comment;
 use crate::r#enum::post_state::PostState;
 use crate::value_objects::comment_id::CommentId;
 use crate::value_objects::post_id::PostId;
-use shared_kernel::domain::IDomainEvent;
-use std::sync::Arc;
 
 #[derive(Debug, Clone)]
 pub struct Post {
@@ -12,7 +10,7 @@ pub struct Post {
     pub content: String,
     pub state: PostState,
     pub comments: Vec<Comment>,
-    pub recorded_events: Vec<Arc<dyn IDomainEvent>>,
+    // pub recorded_events: Vec<Arc<dyn IDomainEvent>>,
 }
 
 impl Post {
@@ -20,7 +18,7 @@ impl Post {
         Self {
             id,
             comments: vec![],
-            recorded_events: vec![],
+            // recorded_events: vec![],
             state: PostState::StateDraft,
             title: title.to_string(),
             content: content.to_string(),

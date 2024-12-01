@@ -11,6 +11,19 @@ where
     read_post_repository: R,
 }
 
+impl<W, R> PublishPostCommandHandler<W, R>
+where
+    W: IWritePostRepository + Clone,
+    R: IReadPostRepository + Clone,
+{
+    pub fn new(write_post_repository: &W, read_post_repository: &R) -> Self {
+        Self {
+            write_post_repository: write_post_repository.clone(),
+            read_post_repository: read_post_repository.clone(),
+        }
+    }
+}
+
 impl<W, R> ICommandHandler<PublishPostCommand, ()> for PublishPostCommandHandler<W, R>
 where
     W: IWritePostRepository,

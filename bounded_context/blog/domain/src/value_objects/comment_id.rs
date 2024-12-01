@@ -1,6 +1,6 @@
+use shared_kernel::domain::IValueObject;
 use std::fmt::Display;
 use uuid::Uuid;
-use shared_kernel::domain::IValueObject;
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct CommentId(String);

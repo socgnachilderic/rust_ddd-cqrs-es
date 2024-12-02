@@ -1,6 +1,10 @@
-use crate::commands::create_post::create_post_command::CreatePostCommand;
+use std::any::type_name;
+
+use async_trait::async_trait;
 use blog_domain::{aggregate_root::Post, repositories::post_repository::IWritePostRepository};
-use shared_kernel::application::ICommandHandler;
+use shared_kernel::application::commands::ICommandHandler;
+
+use crate::commands::actions::CreatePostCommand;
 
 pub struct CreatePostCommandHandler<T: IWritePostRepository> {
     write_post_repository: T,
@@ -14,10 +18,15 @@ impl<T: IWritePostRepository + Clone> CreatePostCommandHandler<T> {
     }
 }
 
+#[async_trait]
 impl<T: IWritePostRepository> ICommandHandler<CreatePostCommand, Post>
     for CreatePostCommandHandler<T>
 {
     async fn execute(&self, command: CreatePostCommand) -> Post {
         self.write_post_repository.add(command.into()).await
+    }
+
+    fn listen_to() -> &'static str {
+        type_name::<CreatePostCommand>()
     }
 }

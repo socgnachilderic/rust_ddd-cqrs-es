@@ -1,13 +1,15 @@
+use async_trait::async_trait;
+
 use crate::aggregate_root::Post;
 use crate::value_objects::post_id::PostId;
 
-#[trait_variant::make(WritePostRepository: Send)]
-pub trait IWritePostRepository {
+#[async_trait]
+pub trait IWritePostRepository: Sync + Send {
     async fn add(&self, post: Post) -> Post;
 }
 
-#[trait_variant::make(ReadPostRepository: Send)]
-pub trait IReadPostRepository {
+#[async_trait]
+pub trait IReadPostRepository: Sync + Send {
     async fn get(&self, id: &PostId) -> Option<Post>;
     async fn all(&self) -> Vec<Post>;
 }

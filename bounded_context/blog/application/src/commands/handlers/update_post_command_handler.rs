@@ -1,21 +1,25 @@
-use crate::commands::update_post::update_post_command::UpdatePostCommand;
-use blog_domain::repositories::post_repository::{IWritePostRepository, ReadPostRepository};
+use std::any::type_name;
+
+use crate::commands::actions::UpdatePostCommand;
+use async_trait::async_trait;
+use blog_domain::repositories::post_repository::{IReadPostRepository, IWritePostRepository};
 use blog_domain::value_objects::post_id::PostId;
-use shared_kernel::application::ICommandHandler;
+use shared_kernel::application::commands::ICommandHandler;
 
 pub struct UpdatePostCommandHandler<W, R>
 where
     W: IWritePostRepository,
-    R: ReadPostRepository,
+    R: IReadPostRepository,
 {
     write_post_repository: W,
     read_post_repository: R,
 }
 
+#[async_trait]
 impl<W, R> ICommandHandler<UpdatePostCommand, ()> for UpdatePostCommandHandler<W, R>
 where
     W: IWritePostRepository,
-    R: ReadPostRepository,
+    R: IReadPostRepository,
 {
     async fn execute(&self, command: UpdatePostCommand) {
         let post_id = PostId::new(&command.post_id);
@@ -30,5 +34,9 @@ where
 
             self.write_post_repository.add(post).await;
         }
+    }
+
+    fn listen_to() -> &'static str {
+        type_name::<UpdatePostCommand>()
     }
 }

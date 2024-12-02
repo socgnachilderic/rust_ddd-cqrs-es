@@ -1,6 +1,6 @@
 use blog_domain::aggregate_root::Post;
 use blog_domain::value_objects::post_id::PostId;
-use shared_kernel::application::ICommand;
+use shared_kernel::application::commands::ICommand;
 
 #[derive(Debug, Clone)]
 pub struct CreatePostCommand {

@@ -1,4 +1,3 @@
-pub mod comment_post;
-pub mod create_post;
-pub mod publish_post;
-pub mod update_post;
+pub mod actions;
+pub mod handlers;
+pub mod middlewares;

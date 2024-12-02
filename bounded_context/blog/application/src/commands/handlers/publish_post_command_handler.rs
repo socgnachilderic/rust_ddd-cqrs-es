@@ -1,6 +1,9 @@
-use crate::commands::publish_post::publish_post_command::PublishPostCommand;
+use std::any::type_name;
+
+use crate::commands::actions::PublishPostCommand;
+use async_trait::async_trait;
 use blog_domain::repositories::post_repository::{IReadPostRepository, IWritePostRepository};
-use shared_kernel::application::ICommandHandler;
+use shared_kernel::application::commands::ICommandHandler;
 
 pub struct PublishPostCommandHandler<W, R>
 where
@@ -24,6 +27,7 @@ where
     }
 }
 
+#[async_trait]
 impl<W, R> ICommandHandler<PublishPostCommand, ()> for PublishPostCommandHandler<W, R>
 where
     W: IWritePostRepository,
@@ -34,5 +38,9 @@ where
             post.publish();
             self.write_post_repository.add(post).await;
         }
+    }
+
+    fn listen_to() -> &'static str {
+        type_name::<PublishPostCommand>()
     }
 }

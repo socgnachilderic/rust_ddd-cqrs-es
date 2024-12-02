@@ -3,9 +3,10 @@ mod post_object;
 
 use async_graphql::{Context, Object};
 use blog_api::InjectionContainer;
+use blog_application::queries::actions::GetAllPostQuery;
 use create_post_input::CreatePostInput;
 use post_object::PostObject;
-use shared_kernel::application::{ICommandHandler, IQueryHandler};
+use shared_kernel::application::{commands::ICommandHandler, queries::IQueryHandler};
 
 #[derive(Default)]
 pub(crate) struct PostQuery;
@@ -15,7 +16,7 @@ impl PostQuery {
     async fn get_all_posts(&self, ctx: &Context<'_>) -> Vec<PostObject> {
         ctx.data_unchecked::<InjectionContainer>()
             .get_all_posts_handler
-            .execute(())
+            .execute(GetAllPostQuery)
             .await
             .into_iter()
             .map(PostObject::from)

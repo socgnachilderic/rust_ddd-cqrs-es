@@ -1,4 +1,4 @@
-use shared_kernel::application::IQuery;
+use shared_kernel::application::queries::IQuery;
 
 #[derive(Debug, Clone)]
 pub struct GetPostQuery(pub String);

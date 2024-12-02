@@ -1,2 +1,3 @@
-pub mod all_posts;
-pub mod get_post;
+pub mod actions;
+pub mod handlers;
+pub mod middlewares;

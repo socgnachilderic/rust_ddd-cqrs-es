@@ -332,6 +332,7 @@ dependencies = [
 name = "blog_application"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "blog_domain",
  "shared_kernel",
 ]
@@ -340,8 +341,8 @@ dependencies = [
 name = "blog_domain"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "shared_kernel",
- "trait-variant",
  "uuid",
 ]
 
@@ -349,6 +350,7 @@ dependencies = [
 name = "blog_infrastructure"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "blog_domain",
  "dotenvy",
  "sqlx",
@@ -1773,7 +1775,7 @@ dependencies = [
 name = "shared_kernel"
 version = "0.1.0"
 dependencies = [
- "trait-variant",
+ "async-trait",
 ]
 
 [[package]]
@@ -2357,17 +2359,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e672c95779cf947c5311f83787af4fa8fffd12fb27e4993211a84bdfd9610f9c"
 dependencies = [
  "once_cell",
-]
-
-[[package]]
-name = "trait-variant"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "70977707304198400eb4835a78f6a9f928bf41bba420deb8fdb175cd965d77a7"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]

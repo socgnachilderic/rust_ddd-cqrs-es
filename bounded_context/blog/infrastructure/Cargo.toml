@@ -6,8 +6,10 @@ authors.workspace = true
 
 [dependencies]
 async-trait.workspace = true
+blog_application = { path = "../application" }
 blog_domain = { path = "../domain" }
 dotenvy.workspace = true
+shared_kernel = { path = "../../../shared_kernel" }
 sqlx = { version = "0.8.2", features = [
     "postgres",
     "runtime-tokio-native-tls",

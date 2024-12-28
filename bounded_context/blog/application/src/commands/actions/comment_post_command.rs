@@ -6,4 +6,8 @@ pub struct CommentPostCommand {
     pub comment: String,
 }
 
-impl ICommand for CommentPostCommand {}
+impl ICommand for CommentPostCommand {
+    fn as_any(&self) -> &dyn std::any::Any {
+        self
+    }
+}

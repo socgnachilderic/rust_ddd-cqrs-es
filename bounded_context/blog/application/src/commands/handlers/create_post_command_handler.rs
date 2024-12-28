@@ -1,5 +1,3 @@
-use std::any::type_name;
-
 use async_trait::async_trait;
 use blog_domain::{aggregate_root::Post, repositories::post_repository::IWritePostRepository};
 use shared_kernel::application::commands::ICommandHandler;
@@ -22,11 +20,7 @@ impl<T: IWritePostRepository + Clone> CreatePostCommandHandler<T> {
 impl<T: IWritePostRepository> ICommandHandler<CreatePostCommand, Post>
     for CreatePostCommandHandler<T>
 {
-    async fn execute(&self, command: CreatePostCommand) -> Post {
+    async fn execute(&self, command: &CreatePostCommand) -> Post {
         self.write_post_repository.add(command.into()).await
-    }
-
-    fn listen_to() -> &'static str {
-        type_name::<CreatePostCommand>()
     }
 }

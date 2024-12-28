@@ -1,5 +1,3 @@
-use std::any::type_name;
-
 use crate::commands::actions::PublishPostCommand;
 use async_trait::async_trait;
 use blog_domain::repositories::post_repository::{IReadPostRepository, IWritePostRepository};
@@ -33,14 +31,10 @@ where
     W: IWritePostRepository,
     R: IReadPostRepository,
 {
-    async fn execute(&self, command: PublishPostCommand) {
+    async fn execute(&self, command: &PublishPostCommand) {
         if let Some(mut post) = self.read_post_repository.get(&command.into()).await {
             post.publish();
             self.write_post_repository.add(post).await;
         }
-    }
-
-    fn listen_to() -> &'static str {
-        type_name::<PublishPostCommand>()
     }
 }

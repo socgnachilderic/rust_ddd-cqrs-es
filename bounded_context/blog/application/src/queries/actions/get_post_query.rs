@@ -9,4 +9,8 @@ impl From<String> for GetPostQuery {
     }
 }
 
-impl IQuery for GetPostQuery {}
+impl IQuery for GetPostQuery {
+    fn as_any(&self) -> &dyn std::any::Any {
+        self
+    }
+}

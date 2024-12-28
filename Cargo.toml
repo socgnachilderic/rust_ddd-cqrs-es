@@ -15,9 +15,10 @@ edition = "2021"
 authors = ["Childéric <socgnachilderic@proton.me>"]
 
 [workspace.dependencies]
+anyhow = "1.0.95"
 async-trait = { version = "0.1.83" }
 dotenvy = "0.15.7"
-tokio = { version = "1.41.1", features = ["full"] }
+tokio = { version = "1.42.0", features = ["full"] }
 uuid = { version = "1.11.0", features = ["fast-rng", "v4"] }
 
 [profile.release]

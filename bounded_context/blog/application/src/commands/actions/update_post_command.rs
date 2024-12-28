@@ -27,4 +27,8 @@ impl UpdatePostCommand {
     }
 }
 
-impl ICommand for UpdatePostCommand {}
+impl ICommand for UpdatePostCommand {
+    fn as_any(&self) -> &dyn std::any::Any {
+        self
+    }
+}

@@ -21,7 +21,7 @@ impl<R: IReadPostRepository + Clone> GetAllPostsQueryHandler<R> {
 impl<R: IReadPostRepository> IQueryHandler<GetAllPostQuery, Vec<Post>>
     for GetAllPostsQueryHandler<R>
 {
-    async fn execute(&self, _query: GetAllPostQuery) -> Vec<Post> {
+    async fn execute(&self, _query: &GetAllPostQuery) -> Vec<Post> {
         self.read_post_repository.all().await
     }
 }

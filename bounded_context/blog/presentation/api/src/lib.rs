@@ -1,34 +1,32 @@
-use blog_application::commands::handlers::{
-    CommentPostCommandHandler, CreatePostCommandHandler, PublishPostCommandHandler,
-};
-use blog_application::queries::handlers::{GetAllPostsQueryHandler, GetPostQueryHandler};
-use blog_infrastructure::sqlx::{establish_connection, sqlx_post_repository::SqlxPostRepository};
+pub mod post_command_dispatcher_builder;
+pub mod post_query_dispatcher_builder;
+
+use blog_infrastructure::sqlx::establish_connection;
+use post_command_dispatcher_builder::PostCommandDispatcherBuilder;
+use post_query_dispatcher_builder::PostQueryDispatcherBuilder;
+use shared_kernel::application::{commands::CommandDispatcher, queries::QueryDispatcher};
 
 pub struct InjectionContainer {
-    pub get_all_posts_handler: GetAllPostsQueryHandler<SqlxPostRepository>,
-    pub get_post_handler: GetPostQueryHandler<SqlxPostRepository>,
-    pub create_post_handler: CreatePostCommandHandler<SqlxPostRepository>,
-    pub publish_post_handler: PublishPostCommandHandler<SqlxPostRepository, SqlxPostRepository>,
-    pub comment_post_handler: CommentPostCommandHandler<SqlxPostRepository, SqlxPostRepository>,
+    pub post_command_dispatcher: CommandDispatcher,
+    pub post_query_dispatcher: QueryDispatcher,
 }
 
 impl InjectionContainer {
     pub async fn new() -> Self {
         let pool = establish_connection().await.unwrap();
-        let post_repository = SqlxPostRepository::new(pool);
 
         Self {
-            get_all_posts_handler: GetAllPostsQueryHandler::new(&post_repository),
-            get_post_handler: GetPostQueryHandler::new(&post_repository),
-            create_post_handler: CreatePostCommandHandler::new(&post_repository),
-            publish_post_handler: PublishPostCommandHandler::new(
-                &post_repository,
-                &post_repository,
-            ),
-            comment_post_handler: CommentPostCommandHandler::new(
-                &post_repository,
-                &post_repository,
-            ),
+            post_command_dispatcher: PostCommandDispatcherBuilder::new(pool.clone())
+                .with_create_post_pipeline()
+                .with_update_post_pipeline()
+                .with_publish_post_pipeline()
+                .with_comment_post_pipeline()
+                .build(),
+
+            post_query_dispatcher: PostQueryDispatcherBuilder::new(pool.clone())
+                .with_get_post_pipeline()
+                .with_get_all_posts_pipeline()
+                .build(),
         }
     }
 }

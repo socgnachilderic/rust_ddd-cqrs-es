@@ -1,30 +1,51 @@
-use std::{any::type_name_of_val, sync::Arc};
+use std::{marker::PhantomData, sync::Arc};
 
 use async_trait::async_trait;
-use shared_kernel::application::commands::{ICommand, ICommandBusMiddleware, ICommandResponse};
+use shared_kernel::application::commands::{ICommand, ICommandBusMiddleware, ICommandHandler};
 
 use crate::interfaces::ILogger;
 
-pub struct LoggerMiddleware<T: ILogger> {
+pub struct LoggerMiddleware<T, C, R>
+where
+    T: ILogger,
+    C: ICommand,
+{
     logger: T,
-    next: Arc<dyn ICommandBusMiddleware>,
+    _c: PhantomData<C>,
+    _r: PhantomData<R>,
 }
 
-impl<T: ILogger> LoggerMiddleware<T> {
-    pub fn new(next: Arc<dyn ICommandBusMiddleware>, logger: T) -> Self {
-        LoggerMiddleware { logger, next }
+impl<T, C, R> LoggerMiddleware<T, C, R>
+where
+    T: ILogger,
+    C: ICommand,
+{
+    pub fn new(logger: T) -> Self {
+        Self {
+            logger,
+            _c: PhantomData,
+            _r: PhantomData,
+        }
     }
 }
 
 #[async_trait]
-impl<T: ILogger> ICommandBusMiddleware for LoggerMiddleware<T> {
-    async fn process(&self, command: &dyn ICommand) -> Arc<dyn ICommandResponse> {
-        let response = self.next.process(command).await;
-
+impl<T, C, R> ICommandBusMiddleware<C, R> for LoggerMiddleware<T, C, R>
+where
+    T: ILogger,
+    C: ICommand,
+    R: Send + Sync,
+{
+    async fn process(&self, command: &C, next: Arc<dyn ICommandHandler<C, R>>) -> R {
         self.logger.info(&format!(
-            "Processing command: {}",
-            type_name_of_val(command)
+            "LoggingMiddleware: Received command of type {}",
+            std::any::type_name::<C>()
         ));
+
+        let response = next.execute(command).await;
+
+        self.logger
+            .info("LoggingMiddleware: Command processed successfully");
 
         response
     }

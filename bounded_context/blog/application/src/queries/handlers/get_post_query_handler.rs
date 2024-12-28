@@ -20,7 +20,7 @@ impl<R: IReadPostRepository + Clone> GetPostQueryHandler<R> {
 
 #[async_trait]
 impl<R: IReadPostRepository> IQueryHandler<GetPostQuery, Option<Post>> for GetPostQueryHandler<R> {
-    async fn execute(&self, query: GetPostQuery) -> Option<Post> {
+    async fn execute(&self, query: &GetPostQuery) -> Option<Post> {
         let post_id = PostId::new(&query.0);
 
         self.read_post_repository.get(&post_id).await

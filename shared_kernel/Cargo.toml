@@ -5,4 +5,5 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
-trait-variant.workspace = true
+anyhow.workspace = true
+async-trait.workspace = true

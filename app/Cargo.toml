@@ -1,0 +1,29 @@
+[package]
+name = "app"
+version = "0.1.0"
+authors = ["childeric <westbook90@gmail.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+blog-api = { path = "../bounded_context/blog/presentation/api", optional = true }
+blog_domain = { path = "../bounded_context/blog/domain", optional = true }
+blog_application = { path = "../bounded_context/blog/application", optional = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = "1.0.133"
+shared_kernel = { path = "../shared_kernel", optional = true }
+dioxus = { version = "0.6.0", features = ["router", "fullstack"] }
+
+[features]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
+server = [
+    "dioxus/server",
+    "dep:blog-api",
+    "dep:blog_domain",
+    "dep:blog_application",
+    "dep:shared_kernel",
+]

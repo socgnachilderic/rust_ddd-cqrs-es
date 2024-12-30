@@ -5,8 +5,8 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
-async-graphql = "7.0.11"
-async-graphql-axum = "7.0.11"
+async-graphql = "7.0.13"
+async-graphql-axum = "7.0.13"
 axum = "0.7.9"
 blog-api = { path = "../api" }
 blog_domain = { path = "../../domain" }

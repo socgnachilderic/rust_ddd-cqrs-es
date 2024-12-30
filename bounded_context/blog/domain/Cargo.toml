@@ -5,6 +5,6 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
+async-trait.workspace = true
 shared_kernel = { path = "../../../shared_kernel" }
-trait-variant.workspace = true
 uuid.workspace = true

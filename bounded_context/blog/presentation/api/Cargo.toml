@@ -5,6 +5,7 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
+blog_domain = { path = "../../domain" }
 blog_application = { path = "../../application" }
 blog_infrastructure = { path = "../../infrastructure" }
 shared_kernel = { path = "../../../../shared_kernel" }

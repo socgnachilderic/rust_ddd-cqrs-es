@@ -2,6 +2,7 @@ use std::ops::Deref;
 use std::sync::Arc;
 
 use crate::sqlx::models::post_model::PostModel;
+use async_trait::async_trait;
 use blog_domain::aggregate_root::Post;
 use blog_domain::repositories::post_repository::{IReadPostRepository, IWritePostRepository};
 use blog_domain::value_objects::post_id::PostId;
@@ -18,6 +19,7 @@ impl SqlxPostRepository {
     }
 }
 
+#[async_trait]
 impl IWritePostRepository for SqlxPostRepository {
     async fn add(&self, post: Post) -> Post {
         sqlx::query_as::<_, PostModel>(
@@ -33,6 +35,7 @@ impl IWritePostRepository for SqlxPostRepository {
     }
 }
 
+#[async_trait]
 impl IReadPostRepository for SqlxPostRepository {
     async fn get(&self, id: &PostId) -> Option<Post> {
         sqlx::query_as::<_, PostModel>("SELECT * FROM post WHERE id=$1")

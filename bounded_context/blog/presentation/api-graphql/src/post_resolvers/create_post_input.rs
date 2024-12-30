@@ -1,5 +1,5 @@
 use async_graphql::InputObject;
-use blog_application::commands::create_post::create_post_command::CreatePostCommand;
+use blog_application::commands::actions::CreatePostCommand;
 
 #[derive(InputObject)]
 pub struct CreatePostInput {

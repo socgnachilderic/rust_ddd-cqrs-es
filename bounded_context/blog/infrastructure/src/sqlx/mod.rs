@@ -9,6 +9,8 @@ mod repositories;
 
 pub use repositories::*;
 
+pub type Pool = PgPool;
+
 pub async fn establish_connection() -> sqlx::Result<Arc<PgPool>> {
     let database_url = var("DATABASE_URL")
         .map_err(|e| format!("Failed to get DATABASE_URL: {}", e))

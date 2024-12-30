@@ -5,5 +5,6 @@ edition.workspace = true
 authors.workspace = true
 
 [dependencies]
+async-trait.workspace = true
 blog_domain = { path = "../domain" }
 shared_kernel = { path = "../../../shared_kernel" }

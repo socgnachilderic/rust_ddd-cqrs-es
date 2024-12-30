@@ -4,8 +4,10 @@ members = [
     "bounded_context/blog/application",
     "bounded_context/blog/domain",
     "bounded_context/blog/infrastructure",
-    "bounded_context/blog/presentation/api", "bounded_context/blog/presentation/api-graphql",
-    "shared_kernel"
+    "bounded_context/blog/presentation/api",
+    "bounded_context/blog/presentation/api-graphql",
+    "shared_kernel",
+    "app",
 ]
 
 [workspace.package]
@@ -14,10 +16,22 @@ edition = "2021"
 authors = ["Childéric <socgnachilderic@proton.me>"]
 
 [workspace.dependencies]
+anyhow = "1.0.95"
+async-trait = { version = "0.1.83" }
 dotenvy = "0.15.7"
-trait-variant = "0.1.2"
-tokio = { version = "1.41.1", features = ["full"] }
+serde = { version = "1.0.217", features = ["derive"] }
+tokio = { version = "1.42.0", features = ["full"] }
 uuid = { version = "1.11.0", features = ["fast-rng", "v4"] }
 
 [profile.release]
 debug = true
+
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"

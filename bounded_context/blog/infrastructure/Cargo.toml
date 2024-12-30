@@ -9,6 +9,7 @@ async-trait.workspace = true
 blog_application = { path = "../application" }
 blog_domain = { path = "../domain" }
 dotenvy.workspace = true
+log = "0.4.22"
 shared_kernel = { path = "../../../shared_kernel" }
 sqlx = { version = "0.8.2", features = [
     "postgres",

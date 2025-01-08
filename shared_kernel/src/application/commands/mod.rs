@@ -17,5 +17,5 @@ pub trait ICommand: Any + Send + Sync {
 
 #[async_trait]
 pub trait ICommandHandler<C: ICommand, R>: Send + Sync {
-    async fn execute(&self, command: &C) -> R;
+    async fn execute(&self, command: &C) -> anyhow::Result<R>;
 }

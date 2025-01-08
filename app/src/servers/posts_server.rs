@@ -9,6 +9,7 @@ mod posts_server {
     use blog_application::commands::actions::CreatePostCommand;
     use blog_application::queries::actions::GetAllPostQuery;
     use blog_domain::aggregate_root::Post as PostEntity;
+    use blog_domain::value_objects::post_id::PostId;
 
     pub async fn get_all_posts() -> Vec<Post> {
         let inject_api = InjectionContainer::new().await;
@@ -23,15 +24,15 @@ mod posts_server {
             .collect()
     }
 
-    pub async fn create_post(post: CreatePostInput) -> Post {
+    pub async fn create_post(post: CreatePostInput) -> String {
         let inject_api = InjectionContainer::new().await;
 
         inject_api
             .post_command_dispatcher
-            .dispatch::<CreatePostCommand, PostEntity>(post.into())
+            .dispatch::<CreatePostCommand, PostId>(post.into())
             .await
             .unwrap()
-            .into()
+            .to_string()
     }
 }
 
@@ -42,7 +43,7 @@ pub async fn get_all_posts_server() -> Result<Vec<Post>, ServerFnError> {
 }
 
 #[server(CreatePostServer)]
-pub async fn create_post_server(input: CreatePostInput) -> Result<Post, ServerFnError> {
+pub async fn create_post_server(input: CreatePostInput) -> Result<String, ServerFnError> {
     let post = posts_server::create_post(input).await;
 
     Ok(post)

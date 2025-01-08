@@ -6,7 +6,8 @@ use super::{ICommand, ICommandHandler};
 
 #[async_trait]
 pub trait ICommandBusMiddleware<C: ICommand, R>: Sync + Send {
-    async fn process(&self, command: &C, next: Arc<dyn ICommandHandler<C, R>>) -> R;
+    async fn process(&self, command: &C, next: Arc<dyn ICommandHandler<C, R>>)
+        -> anyhow::Result<R>;
 }
 
 pub struct CommandBusMiddlewareHandler<C: ICommand, R> {
@@ -30,7 +31,7 @@ impl<C: ICommand, R> CommandBusMiddlewareHandler<C, R> {
 
 #[async_trait::async_trait]
 impl<C: ICommand, R> ICommandHandler<C, R> for CommandBusMiddlewareHandler<C, R> {
-    async fn execute(&self, command: &C) -> R {
+    async fn execute(&self, command: &C) -> anyhow::Result<R> {
         let mut current_handler = self.handler.clone();
 
         for middleware in self.middlewares.iter().rev() {
@@ -54,7 +55,7 @@ struct CommandBusMiddlewareWrapper<C: ICommand, R> {
 
 #[async_trait::async_trait]
 impl<C: ICommand, R> ICommandHandler<C, R> for CommandBusMiddlewareWrapper<C, R> {
-    async fn execute(&self, command: &C) -> R {
+    async fn execute(&self, command: &C) -> anyhow::Result<R> {
         self.middleware
             .process(command, self.next_handler.clone())
             .await

@@ -16,8 +16,8 @@ pub fn Blog() -> Element {
         let content = &evt.values()["content"].as_value();
         let post = CreatePostInput::new(title, content);
 
-        let post_created = create_post_server(post).await.unwrap();
-        info!("post: {post_created:?}");
+        let post_id = create_post_server(post).await.unwrap();
+        info!("post: {post_id:?}");
         posts_resources.restart();
         modalIsOpen.set(false);
     };

@@ -1,11 +1,11 @@
 [workspace]
 resolver = "2"
 members = [
-    "bounded_context/blog/application",
-    "bounded_context/blog/domain",
-    "bounded_context/blog/infrastructure",
-    "bounded_context/blog/presentation/api",
-    "bounded_context/blog/presentation/api-graphql",
+    "bc/blog/application",
+    "bc/blog/domain",
+    "bc/blog/infrastructure",
+    "bc/blog/presentation/api",
+    "bc/blog/presentation/api-graphql",
     "shared_kernel",
     "app",
 ]
@@ -17,9 +17,10 @@ authors = ["Childéric <socgnachilderic@proton.me>"]
 
 [workspace.dependencies]
 anyhow = "1.0.95"
-async-trait = { version = "0.1.83" }
+async-trait = { version = "0.1.85" }
 dotenvy = "0.15.7"
 serde = { version = "1.0.217", features = ["derive"] }
+serde_json = "1.0.135"
 tokio = { version = "1.42.0", features = ["full"] }
 uuid = { version = "1.11.0", features = ["fast-rng", "v4"] }
 

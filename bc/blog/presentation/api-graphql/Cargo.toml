@@ -1,0 +1,17 @@
+[package]
+name = "blog-api-graphql"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+async-graphql = "7.0.13"
+async-graphql-axum = "7.0.13"
+axum = "0.8.1"
+blog-api = { path = "../api" }
+blog_domain = { path = "../../domain" }
+blog_application = { path = "../../application" }
+shared_kernel = { path = "../../../../shared_kernel" }
+tokio.workspace = true
+tower-http = { version = "0.6.2", features = ["cors"] }

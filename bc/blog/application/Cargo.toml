@@ -1,5 +1,5 @@
 [package]
-name = "shared_kernel"
+name = "blog_application"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
@@ -7,4 +7,5 @@ authors.workspace = true
 [dependencies]
 anyhow.workspace = true
 async-trait.workspace = true
-serde = { workspace = true, features = ["derive"] }
+blog_domain = { path = "../domain" }
+shared_kernel = { path = "../../../shared_kernel" }

@@ -70,7 +70,7 @@ where
         command: Box<dyn ICommand>,
     ) -> anyhow::Result<Box<dyn Any + Send>> {
         if let Some(cmd) = command.as_any().downcast_ref::<C>() {
-            let response = self.inner.execute(cmd).await;
+            let response = self.inner.execute(cmd).await?;
             Ok(Box::new(response))
         } else {
             Err(anyhow::anyhow!("Invalid command type"))

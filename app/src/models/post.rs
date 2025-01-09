@@ -7,7 +7,7 @@ use blog_domain::aggregate_root::Post as PostEntity;
 #[cfg(feature = "server")]
 use blog_domain::events::PostCreatedEvent;
 
-#[derive(Debug, Serialize, Deserialize, Default, Clone)]
+#[derive(Debug, Serialize, Deserialize, Default, Clone, PartialEq)]
 pub struct Post {
     pub id: String,
     pub title: String,

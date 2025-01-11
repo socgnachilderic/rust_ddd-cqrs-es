@@ -6,6 +6,7 @@ use sqlx::PgPool;
 
 mod event_store;
 mod models;
+mod payloads;
 pub mod projections;
 mod repositories;
 

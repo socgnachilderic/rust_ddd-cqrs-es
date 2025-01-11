@@ -46,7 +46,7 @@ impl IReadPostRepository for SqlxPostRepository {
     }
 
     async fn all(&self) -> Vec<Post> {
-        sqlx::query_as::<_, PostModel>("SELECT * FROM post_projection")
+        sqlx::query_as::<_, PostModel>("SELECT * FROM post_projection ORDER BY created_on ASC")
             .fetch_all(self.pool.as_ref())
             .await
             .unwrap()

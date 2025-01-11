@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "server")]
-use blog_application::commands::actions::CreatePostCommand;
+use blog_application::commands::actions::{CreatePostCommand, UpdatePostCommand};
 #[cfg(feature = "server")]
 use blog_domain::aggregate_root::Post as PostEntity;
 #[cfg(feature = "server")]
@@ -55,6 +55,41 @@ impl CreatePostInput {
 impl From<CreatePostInput> for CreatePostCommand {
     fn from(value: CreatePostInput) -> Self {
         Self {
+            title: value.title,
+            content: value.content,
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Default, Clone)]
+pub struct UpdatePostInput {
+    pub post_id: String,
+    pub title: Option<String>,
+    pub content: Option<String>,
+}
+
+impl UpdatePostInput {
+    pub fn with_id(mut self, id: &str) -> Self {
+        self.post_id = id.to_string();
+        self
+    }
+
+    pub fn with_title(mut self, title: &str) -> Self {
+        self.title = Some(title.to_string());
+        self
+    }
+
+    pub fn with_content(mut self, content: &str) -> Self {
+        self.content = Some(content.to_string());
+        self
+    }
+}
+
+#[cfg(feature = "server")]
+impl From<UpdatePostInput> for UpdatePostCommand {
+    fn from(value: UpdatePostInput) -> Self {
+        Self {
+            post_id: value.post_id,
             title: value.title,
             content: value.content,
         }

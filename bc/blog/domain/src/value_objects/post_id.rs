@@ -1,10 +1,8 @@
-use serde::{Deserialize, Serialize};
 use shared_kernel::domain::IValueObject;
 use std::fmt::Display;
 use uuid::Uuid;
 
-#[derive(Debug, Clone, Eq, PartialEq, Hash, Serialize, Deserialize)]
-#[serde(transparent)]
+#[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct PostId(String);
 
 impl PostId {
@@ -22,6 +20,18 @@ impl IValueObject for PostId {}
 impl AsRef<str> for PostId {
     fn as_ref(&self) -> &str {
         &self.0
+    }
+}
+
+impl From<String> for PostId {
+    fn from(value: String) -> Self {
+        PostId::new(&value)
+    }
+}
+
+impl From<&String> for PostId {
+    fn from(value: &String) -> Self {
+        PostId::new(value)
     }
 }
 

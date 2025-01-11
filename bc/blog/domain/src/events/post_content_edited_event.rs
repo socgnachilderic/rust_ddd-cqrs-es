@@ -10,25 +10,23 @@ use crate::{aggregate_root::PostAggregate, value_objects::post_id::PostId};
 use super::PostAggregateEvent;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct PostCreatedEvent {
+pub struct PostContentEditedEvent {
     pub post_id: PostId,
-    pub title: String,
     pub content: String,
     pub occurred_on: Date,
     pub version: i64,
 }
 
-impl IApplyDomainEvent<PostAggregate> for PostCreatedEvent {
+impl IApplyDomainEvent<PostAggregate> for PostContentEditedEvent {
     fn apply_to(&self, aggregate: &mut PostAggregate) {
-        aggregate.post.title = self.title.clone();
         aggregate.post.content = self.content.clone();
         aggregate.version = self.version;
     }
 }
 
-impl IDomainEvent for PostCreatedEvent {
+impl IDomainEvent for PostContentEditedEvent {
     fn event_type(&self) -> &'static str {
-        "PostCreated"
+        "PostContentChanged"
     }
     fn aggregate_id(&self) -> String {
         self.post_id.to_string()
@@ -47,8 +45,8 @@ impl IDomainEvent for PostCreatedEvent {
     }
 }
 
-impl From<PostCreatedEvent> for PostAggregateEvent {
-    fn from(event: PostCreatedEvent) -> Self {
-        PostAggregateEvent::PostCreated(event)
+impl From<PostContentEditedEvent> for PostAggregateEvent {
+    fn from(event: PostContentEditedEvent) -> Self {
+        PostAggregateEvent::PostContentEdited(event)
     }
 }

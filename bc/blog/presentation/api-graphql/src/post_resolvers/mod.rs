@@ -1,15 +1,17 @@
 mod create_post_input;
 mod post_object;
+mod update_post_input;
 
 use async_graphql::{Context, Object};
 use blog_api::InjectionContainer;
 use blog_application::{
-    commands::actions::CreatePostCommand,
+    commands::actions::{CreatePostCommand, UpdatePostCommand},
     queries::actions::{GetAllPostQuery, GetPostQuery},
 };
 use blog_domain::{aggregate_root::Post, value_objects::post_id::PostId};
 use create_post_input::CreatePostInput;
 use post_object::PostObject;
+use update_post_input::UpdatePostInput;
 
 #[derive(Default)]
 pub(crate) struct PostQuery;
@@ -55,6 +57,29 @@ impl PostMutation {
             .await
             .unwrap()
             .to_string();
+
+        injection_container
+            .post_query_dispatcher
+            .dispatch::<GetPostQuery, Option<Post>>(GetPostQuery(post_id))
+            .await
+            .unwrap()
+            .unwrap()
+            .into()
+    }
+
+    async fn update_post(
+        &self,
+        ctx: &Context<'_>,
+        update_post_input: UpdatePostInput,
+    ) -> PostObject {
+        let post_id = update_post_input.post_id.to_string();
+        let injection_container = ctx.data_unchecked::<InjectionContainer>();
+
+        injection_container
+            .post_command_dispatcher
+            .dispatch::<UpdatePostCommand, ()>(update_post_input.into())
+            .await
+            .unwrap();
 
         injection_container
             .post_query_dispatcher

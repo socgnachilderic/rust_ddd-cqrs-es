@@ -1,7 +1,8 @@
 use dioxus::prelude::*;
 use lucide_dioxus::{Eye, Pencil};
 
-use crate::models::Post;
+use crate::models::{Post, UpdatePostInput};
+use crate::servers::posts_server::update_post_server;
 use crate::{models::CreatePostInput, servers::posts_server::create_post_server};
 
 #[derive(Debug, Default, Clone, PartialEq)]
@@ -60,10 +61,27 @@ impl PostModalAction {
     pub async fn onsubmit(&self, title: &str, content: &str) {
         match self {
             Self::Create => {
-                let post = CreatePostInput::new(title, content);
-                create_post_server(post).await.unwrap();
+                let input = CreatePostInput::new(title, content);
+                create_post_server(input).await.unwrap();
             }
-            Self::Edit(_) => {}
+            Self::Edit(post) => {
+                let mut is_edited = false;
+                let mut input = UpdatePostInput::default().with_id(&post.id);
+
+                if !title.is_empty() && post.title != title {
+                    input = input.with_title(title);
+                    is_edited = true;
+                }
+
+                if !content.is_empty() && post.content != content {
+                    input = input.with_content(content);
+                    is_edited = true;
+                }
+
+                if is_edited {
+                    update_post_server(input).await.unwrap();
+                }
+            }
             Self::View(_) => {}
         }
     }

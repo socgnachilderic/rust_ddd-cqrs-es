@@ -31,7 +31,7 @@ pub(super) fn PostModalForm(
                 div { class: "flex justify-between items-start gap-2 ",
                     h3 { class: "text-2xl", "{title}" }
                     div { class: "space-x-2 -mr-3 -mt-2",
-                        {action().modal_action_button(post(), action.clone())}
+                        {action().modal_action_button(post(), action)}
 
                         button {
                             class: "bg-gray-100 p-1.5 rounded-lg text-red-500 hover:bg-red-50",

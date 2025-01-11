@@ -13,7 +13,7 @@ use crate::{models::Post, servers::posts_server::get_all_posts_server};
 pub fn Blog() -> Element {
     let mut posts_resources = use_server_future(get_all_posts_server)?;
     let data = posts_resources().unwrap().unwrap();
-    let mut modal_action = use_signal(|| PostModalAction::default());
+    let mut modal_action = use_signal(PostModalAction::default);
     let mut modal_is_open = use_signal(|| false);
     let mut modal_is_loading = use_signal(|| false);
 

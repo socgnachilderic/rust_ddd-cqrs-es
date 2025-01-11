@@ -12,8 +12,9 @@ blog_domain = { path = "../domain" }
 chrono = "0.4.39"
 dotenvy.workspace = true
 log = "0.4.22"
+serde = { workspace = true, features = ["derive"] }
 serde_json.workspace = true
-shared_kernel = { path = "../../../shared_kernel" }
+shared_kernel = { path = "../../../shared_kernel", features = ["sqlx"] }
 sqlx = { version = "0.8.2", features = [
     "postgres",
     "runtime-tokio-native-tls",

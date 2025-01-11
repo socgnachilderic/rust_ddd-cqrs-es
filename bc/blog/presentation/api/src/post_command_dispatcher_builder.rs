@@ -30,12 +30,14 @@ pub struct PostCommandDispatcherBuilder {
 
 impl PostCommandDispatcherBuilder {
     pub fn new(pool: Arc<Pool>) -> Self {
+        let date_provider = ChronoDateProvider;
+
         Self {
             command_dispatcher: CommandDispatcher::default(),
             post_repository: SqlxPostRepository::new(pool.clone()),
             post_projection_listener: Arc::new(PostProjectionListener::new(pool.clone())),
-            date_provider: ChronoDateProvider,
-            event_store: SqlxEventStore::new(pool),
+            event_store: SqlxEventStore::new(pool, &date_provider),
+            date_provider,
         }
     }
 
@@ -58,10 +60,13 @@ impl PostCommandDispatcherBuilder {
     }
 
     pub fn with_update_post_pipeline(mut self) -> Self {
+        let event_dispatcher =
+            EventDispatcher::default().register(self.post_projection_listener.clone());
         let logging_middleware = Arc::new(LoggerMiddleware::new(SimpleLogger));
         let update_post_handler = Arc::new(UpdatePostCommandHandler::new(
-            &self.post_repository,
-            &self.post_repository,
+            &self.event_store,
+            &self.date_provider,
+            event_dispatcher,
         ));
         let update_post_pipeline = CommandBusMiddlewareHandler::new(update_post_handler)
             .add_middleware(logging_middleware);

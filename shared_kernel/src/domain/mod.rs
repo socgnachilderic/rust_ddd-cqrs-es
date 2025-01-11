@@ -1,8 +1,11 @@
 pub mod date;
 pub mod domain_event;
+pub mod snapshot;
 
-pub trait IAggregateRoot: IEntity {}
+pub use domain_event::IDomainEvent;
+
+pub trait IValueObject {}
 
 pub trait IEntity {}
 
-pub trait IValueObject {}
+pub trait IAggregateRoot: IEntity {}

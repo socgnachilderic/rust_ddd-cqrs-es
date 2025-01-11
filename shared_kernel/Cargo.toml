@@ -8,3 +8,21 @@ authors.workspace = true
 anyhow.workspace = true
 async-trait.workspace = true
 serde = { workspace = true, features = ["derive"] }
+
+[features]
+default = []
+sqlx = ["dep:sqlx", "dep:serde_json", "chrono"]
+
+[dependencies.sqlx]
+version = "0.8.2"
+optional = true
+features = ["postgres", "runtime-tokio-native-tls", "chrono"]
+
+[dependencies.serde_json]
+version = "1.0.105"
+optional = true
+
+[dependencies.chrono]
+version = "0.4.26"
+optional = true
+features = ["serde"]

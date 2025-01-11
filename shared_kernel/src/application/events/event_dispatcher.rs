@@ -21,9 +21,9 @@ impl EventDispatcher {
         self
     }
 
-    pub async fn dispatch(&self, event: &dyn IDomainEvent) {
+    pub async fn dispatch(&self, event: &dyn IDomainEvent, last_processed_version: i64) {
         for listener in &self.listeners {
-            let _ = listener.handle_boxed(event).await;
+            let _ = listener.handle_boxed(event, last_processed_version).await;
         }
     }
 }
@@ -43,9 +43,13 @@ impl<E> AnyEventListener for EventListenerWrapper<E>
 where
     E: IDomainEvent + 'static,
 {
-    async fn handle_boxed(&self, event: &dyn IDomainEvent) -> anyhow::Result<()> {
+    async fn handle_boxed(
+        &self,
+        event: &dyn IDomainEvent,
+        last_processed_version: i64,
+    ) -> anyhow::Result<()> {
         if let Some(evt) = event.as_any().downcast_ref::<E>() {
-            self.inner.handle(evt).await
+            self.inner.handle(evt, last_processed_version).await
         } else {
             Err(anyhow::anyhow!("Invalid event type"))
         }

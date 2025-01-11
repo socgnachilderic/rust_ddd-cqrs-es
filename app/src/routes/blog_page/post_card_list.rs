@@ -32,7 +32,6 @@ fn PostCard(post: Post, mut onviewpost: Callback<Post>) -> Element {
                         Trash { size: 20 }
                     }
                 }
-            
             }
             p { class: "min-h-[100px]", "{post.content}" }
         }

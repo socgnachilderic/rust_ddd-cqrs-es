@@ -1,4 +1,4 @@
-use blog_domain::events::PostContentEditedEvent;
+use blog_domain::events::PostContentEdited;
 use serde::{Deserialize, Serialize};
 use shared_kernel::domain::date::Date;
 
@@ -9,9 +9,9 @@ pub struct PostContentEditedPayload {
 }
 
 impl PostContentEditedPayload {
-    pub fn into_event(self, version: i64, occurred_on: Date) -> PostContentEditedEvent {
-        PostContentEditedEvent {
-            post_id: self.post_id.into(),
+    pub fn into_event(self, version: i64, occurred_on: Date) -> PostContentEdited {
+        PostContentEdited {
+            aggregate_id: self.post_id.into(),
             content: self.content,
             version,
             occurred_on,
@@ -19,10 +19,10 @@ impl PostContentEditedPayload {
     }
 }
 
-impl From<&PostContentEditedEvent> for PostContentEditedPayload {
-    fn from(event: &PostContentEditedEvent) -> Self {
+impl From<&PostContentEdited> for PostContentEditedPayload {
+    fn from(event: &PostContentEdited) -> Self {
         Self {
-            post_id: event.post_id.to_string(),
+            post_id: event.aggregate_id.to_string(),
             content: event.content.to_string(),
         }
     }

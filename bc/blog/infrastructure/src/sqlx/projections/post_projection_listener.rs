@@ -2,9 +2,7 @@ use std::sync::Arc;
 
 use anyhow::Ok;
 use async_trait::async_trait;
-use blog_domain::events::{
-    PostAggregateEvent, PostContentEditedEvent, PostCreatedEvent, PostTitleChangedEvent,
-};
+use blog_domain::events::{PostAggregateEvent, PostContentEdited, PostCreated, PostTitleChanged};
 use chrono::DateTime;
 use shared_kernel::{application::events::IEventListener, domain::domain_event::IDomainEvent};
 use sqlx::PgPool;
@@ -19,7 +17,7 @@ impl PostProjectionListener {
         Self { pool }
     }
 
-    async fn handle_post_created_event(&self, event: &PostCreatedEvent) -> anyhow::Result<()> {
+    async fn handle_post_created_event(&self, event: &PostCreated) -> anyhow::Result<()> {
         let occurred_on = DateTime::parse_from_rfc3339(&event.occurred_on().to_iso8601())?;
 
         sqlx::query(
@@ -27,7 +25,7 @@ impl PostProjectionListener {
             INSERT INTO post_projection (id, title, content, version, created_on, updated_on) 
             VALUES ($1, $2, $3, $4, $5, $6)",
         )
-        .bind(event.post_id.to_string())
+        .bind(event.aggregate_id.to_string())
         .bind(&event.title)
         .bind(&event.content)
         .bind(event.version)
@@ -41,7 +39,7 @@ impl PostProjectionListener {
 
     async fn handle_post_title_changed_event(
         &self,
-        event: &PostTitleChangedEvent,
+        event: &PostTitleChanged,
     ) -> anyhow::Result<()> {
         let occurred_on = DateTime::parse_from_rfc3339(&event.occurred_on().to_iso8601())?;
 
@@ -52,7 +50,7 @@ impl PostProjectionListener {
             WHERE id = $1
             ",
         )
-        .bind(event.post_id.to_string())
+        .bind(event.aggregate_id.to_string())
         .bind(&event.title)
         .bind(event.version)
         .bind(occurred_on)
@@ -64,7 +62,7 @@ impl PostProjectionListener {
 
     async fn handle_post_content_edited_event(
         &self,
-        event: &PostContentEditedEvent,
+        event: &PostContentEdited,
     ) -> anyhow::Result<()> {
         let occurred_on = DateTime::parse_from_rfc3339(&event.occurred_on().to_iso8601())?;
 
@@ -75,7 +73,7 @@ impl PostProjectionListener {
             WHERE id = $1
             ",
         )
-        .bind(event.post_id.to_string())
+        .bind(event.aggregate_id.to_string())
         .bind(&event.content)
         .bind(event.version)
         .bind(occurred_on)

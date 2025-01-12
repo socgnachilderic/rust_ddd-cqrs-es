@@ -1,11 +1,11 @@
+mod aggregate;
 pub mod date;
 pub mod domain_event;
+mod entity;
 pub mod snapshot;
+mod value_object;
 
-pub use domain_event::IDomainEvent;
-
-pub trait IValueObject {}
-
-pub trait IEntity {}
-
-pub trait IAggregateRoot: IEntity {}
+pub use aggregate::*;
+pub use domain_event::*;
+pub use entity::*;
+pub use value_object::*;

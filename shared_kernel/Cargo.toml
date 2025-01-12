@@ -8,6 +8,7 @@ authors.workspace = true
 anyhow.workspace = true
 async-trait.workspace = true
 serde = { workspace = true, features = ["derive"] }
+shared_kernel_macro = { path = "../macros/shared_kernel" }
 
 [features]
 default = []

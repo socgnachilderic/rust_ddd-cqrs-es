@@ -1,6 +1,6 @@
-use shared_kernel::application::commands::ICommand;
+use shared_kernel::application::commands::Command;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Command)]
 pub struct UpdatePostCommand {
     pub post_id: String,
     pub title: Option<String>,
@@ -23,12 +23,6 @@ impl UpdatePostCommand {
 
     pub fn with_content(mut self, content: &str) -> Self {
         self.content = Some(content.to_string());
-        self
-    }
-}
-
-impl ICommand for UpdatePostCommand {
-    fn as_any(&self) -> &dyn std::any::Any {
         self
     }
 }

@@ -27,9 +27,9 @@ pub fn Blog() -> Element {
 
         modal_is_loading.set(true);
         modal_action().onsubmit(title, content).await;
-        posts_resources.restart();
         modal_is_loading.set(false);
         onclose().await;
+        posts_resources.restart();
     };
 
     rsx! {

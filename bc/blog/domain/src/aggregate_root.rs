@@ -1,11 +1,9 @@
 use shared_kernel::domain::date::Date;
 use shared_kernel::domain::domain_event::{IApplyDomainEvent, IObservableAggregateRoot};
-use shared_kernel::domain::{IAggregateRoot, IEntity};
+use shared_kernel::domain::AggregateRoot;
 
 use crate::entities::comment::Comment;
-use crate::events::{
-    PostAggregateEvent, PostContentEditedEvent, PostCreatedEvent, PostTitleChangedEvent,
-};
+use crate::events::{PostAggregateEvent, PostContentEdited, PostCreated, PostTitleChanged};
 use crate::r#enum::post_state::PostState;
 use crate::value_objects::comment_id::CommentId;
 use crate::value_objects::post_id::PostId;
@@ -69,7 +67,7 @@ impl Default for Post {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, AggregateRoot)]
 pub struct PostAggregate {
     pub post: Post,
     pub version: i64,
@@ -81,8 +79,8 @@ impl PostAggregate {
         let post_id = PostId::generate();
         let mut aggregate = PostAggregateFactory::from_id(post_id.clone());
 
-        let event = PostCreatedEvent {
-            post_id,
+        let event = PostCreated {
+            aggregate_id: post_id,
             title: title.to_string(),
             content: content.to_string(),
             occurred_on: occurred_on.clone(),
@@ -95,8 +93,8 @@ impl PostAggregate {
     }
 
     pub fn change_title(&mut self, title: &str, occurred_on: &Date) {
-        let event = PostTitleChangedEvent {
-            post_id: self.post.id.clone(),
+        let event = PostTitleChanged {
+            aggregate_id: self.post.id.clone(),
             title: title.to_string(),
             occurred_on: occurred_on.clone(),
             version: self.version,
@@ -106,8 +104,8 @@ impl PostAggregate {
     }
 
     pub fn edit_content(&mut self, content: &str, occurred_on: &Date) {
-        let event = PostContentEditedEvent {
-            post_id: self.post.id.clone(),
+        let event = PostContentEdited {
+            aggregate_id: self.post.id.clone(),
             content: content.to_string(),
             occurred_on: occurred_on.clone(),
             version: self.version,
@@ -145,10 +143,6 @@ impl PostAggregate {
         }
     }
 }
-
-impl IEntity for PostAggregate {}
-
-impl IAggregateRoot for PostAggregate {}
 
 impl PartialEq for PostAggregate {
     fn eq(&self, other: &Self) -> bool {

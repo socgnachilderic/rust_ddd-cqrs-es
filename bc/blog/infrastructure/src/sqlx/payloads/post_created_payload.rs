@@ -1,4 +1,4 @@
-use blog_domain::events::PostCreatedEvent;
+use blog_domain::events::PostCreated;
 use serde::{Deserialize, Serialize};
 use shared_kernel::domain::date::Date;
 
@@ -10,9 +10,9 @@ pub struct PostCreatedPayload {
 }
 
 impl PostCreatedPayload {
-    pub fn into_event(self, version: i64, occurred_on: Date) -> PostCreatedEvent {
-        PostCreatedEvent {
-            post_id: self.post_id.into(),
+    pub fn into_event(self, version: i64, occurred_on: Date) -> PostCreated {
+        PostCreated {
+            aggregate_id: self.post_id.into(),
             title: self.title,
             content: self.content,
             version,
@@ -21,23 +21,12 @@ impl PostCreatedPayload {
     }
 }
 
-impl From<&PostCreatedEvent> for PostCreatedPayload {
-    fn from(event: &PostCreatedEvent) -> Self {
+impl From<&PostCreated> for PostCreatedPayload {
+    fn from(event: &PostCreated) -> Self {
         Self {
-            post_id: event.post_id.to_string(),
+            post_id: event.aggregate_id.to_string(),
             title: event.title.to_string(),
             content: event.content.to_string(),
         }
     }
 }
-
-// impl From<PostCreatedSerializer> for PostCreatedEvent {
-//     fn from(event: PostCreatedSerializer) -> Self {
-//         Self {
-//             post_id: event.post_id.into(),
-//             title: event.title,
-//             content: event.content,
-//             occurred_on
-//         }
-//     }
-// }

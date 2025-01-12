@@ -2,6 +2,8 @@ use std::{any::Any, fmt::Debug};
 
 use async_trait::async_trait;
 
+pub use shared_kernel_macro::DomainEvent;
+
 use super::{date::Date, IAggregateRoot};
 
 pub trait IDomainEvent: Any + Debug + Send + Sync {

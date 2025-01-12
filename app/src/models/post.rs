@@ -4,8 +4,6 @@ use serde::{Deserialize, Serialize};
 use blog_application::commands::actions::{CreatePostCommand, UpdatePostCommand};
 #[cfg(feature = "server")]
 use blog_domain::aggregate_root::Post as PostEntity;
-#[cfg(feature = "server")]
-use blog_domain::events::PostCreatedEvent;
 
 #[derive(Debug, Serialize, Deserialize, Default, Clone, PartialEq)]
 pub struct Post {
@@ -21,17 +19,6 @@ impl From<PostEntity> for Post {
             id: post.id.to_string(),
             title: post.title.to_string(),
             content: post.content.to_string(),
-        }
-    }
-}
-
-#[cfg(feature = "server")]
-impl From<PostCreatedEvent> for Post {
-    fn from(event: PostCreatedEvent) -> Self {
-        Self {
-            id: event.post_id.to_string(),
-            title: event.title.to_string(),
-            content: event.content.to_string(),
         }
     }
 }

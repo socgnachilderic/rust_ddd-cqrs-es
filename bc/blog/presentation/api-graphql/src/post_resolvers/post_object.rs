@@ -1,5 +1,5 @@
 use async_graphql::*;
-use blog_domain::{aggregate_root::Post, events::PostCreatedEvent};
+use blog_domain::{aggregate_root::Post, events::PostCreated};
 
 #[derive(SimpleObject)]
 pub(crate) struct PostObject {
@@ -18,10 +18,10 @@ impl From<Post> for PostObject {
     }
 }
 
-impl From<PostCreatedEvent> for PostObject {
-    fn from(event: PostCreatedEvent) -> Self {
+impl From<PostCreated> for PostObject {
+    fn from(event: PostCreated) -> Self {
         Self {
-            id: event.post_id.to_string(),
+            id: event.aggregate_id.to_string(),
             title: event.title.to_string(),
             content: event.content.to_string(),
         }

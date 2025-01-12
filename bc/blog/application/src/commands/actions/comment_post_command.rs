@@ -1,13 +1,7 @@
-use shared_kernel::application::commands::ICommand;
+use shared_kernel::application::commands::Command;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Command)]
 pub struct CommentPostCommand {
     pub post_id: String,
     pub comment: String,
-}
-
-impl ICommand for CommentPostCommand {
-    fn as_any(&self) -> &dyn std::any::Any {
-        self
-    }
 }

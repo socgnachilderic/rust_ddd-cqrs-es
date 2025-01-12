@@ -6,6 +6,7 @@ mod query_bus;
 mod query_dispatcher;
 pub use query_bus::*;
 pub use query_dispatcher::*;
+pub use shared_kernel_macro::Query;
 
 pub trait IQuery: Any + Send + Sync {
     fn type_id(&self) -> TypeId {

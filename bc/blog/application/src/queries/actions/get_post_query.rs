@@ -1,16 +1,10 @@
-use shared_kernel::application::queries::IQuery;
+use shared_kernel::application::queries::Query;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Query)]
 pub struct GetPostQuery(pub String);
 
 impl From<String> for GetPostQuery {
     fn from(id: String) -> Self {
         GetPostQuery(id)
-    }
-}
-
-impl IQuery for GetPostQuery {
-    fn as_any(&self) -> &dyn std::any::Any {
-        self
     }
 }

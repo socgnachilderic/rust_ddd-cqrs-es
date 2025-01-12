@@ -6,6 +6,7 @@ mod command_bus;
 mod command_dispatcher;
 pub use command_bus::*;
 pub use command_dispatcher::*;
+pub use shared_kernel_macro::Command;
 
 pub trait ICommand: Any + Send + Sync {
     fn type_id(&self) -> TypeId {

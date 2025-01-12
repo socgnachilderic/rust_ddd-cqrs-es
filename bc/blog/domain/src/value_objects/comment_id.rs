@@ -1,8 +1,8 @@
-use shared_kernel::domain::IValueObject;
+use shared_kernel::domain::ValueObject;
 use std::fmt::Display;
 use uuid::Uuid;
 
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, Eq, PartialEq, ValueObject)]
 pub struct CommentId(String);
 
 impl CommentId {
@@ -14,8 +14,6 @@ impl CommentId {
         CommentId(Uuid::new_v4().to_string())
     }
 }
-
-impl IValueObject for CommentId {}
 
 impl AsRef<str> for CommentId {
     fn as_ref(&self) -> &str {

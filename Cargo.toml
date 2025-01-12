@@ -6,6 +6,7 @@ members = [
     "bc/blog/infrastructure",
     "bc/blog/presentation/api",
     "bc/blog/presentation/api-graphql",
+    "macros/shared_kernel",
     "shared_kernel",
     "app",
 ]
